@@ -1,13 +1,13 @@
+# api_gateway/app/main.py
+
 from fastapi import FastAPI
+from app.api.v1.endpoint import gateway
 
 app = FastAPI()
 
+app.include_router(gateway.router, prefix="/api/v1", tags=["gateway"])
+
 
 @app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+def read_root():
+    return {"Hello": "API Gateway"}
