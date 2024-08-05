@@ -7,8 +7,8 @@ from app.models.schemas.schemas import UserBase, VehicleBase
 
 router = APIRouter()
 
-USUARIO_SERVICE_URL = "https://user--zmggq4s.internal.orangecliff-243aedf8.australiaeast.azurecontainerapps.io"
-VEHICULO_SERVICE_URL = "https://vehicle--miemh1d.orangecliff-243aedf8.australiaeast.azurecontainerapps.io"
+USUARIO_SERVICE_URL = "https://https://user--kumug52.internal.orangecliff-243aedf8.australiaeast.azurecontainerapps.io"
+VEHICULO_SERVICE_URL = "https://vehicle--2dnnxvk.orangecliff-243aedf8.australiaeast.azurecontainerapps.io/"
 
 
 @router.post("/user/", response_model=dict)
