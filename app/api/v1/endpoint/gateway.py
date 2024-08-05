@@ -7,7 +7,7 @@ from app.models.schemas.schemas import UserBase, VehicleBase
 
 router = APIRouter()
 
-USUARIO_SERVICE_URL = "https://https://user--kumug52.internal.orangecliff-243aedf8.australiaeast.azurecontainerapps.io"
+USUARIO_SERVICE_URL = "https://user--kumug52.internal.orangecliff-243aedf8.australiaeast.azurecontainerapps.io"
 VEHICULO_SERVICE_URL = "https://vehicle--2dnnxvk.orangecliff-243aedf8.australiaeast.azurecontainerapps.io/"
 
 
@@ -72,7 +72,7 @@ async def read_vehicle(
     async with httpx.AsyncClient() as client:
         response = await client.get(f"{VEHICULO_SERVICE_URL}/vehicle/{vehicle_owner}")
     if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail=response.json())
+        raise HTTPException(status_code=response.status_code, detail=response.history)
     return response.json()
 
 
