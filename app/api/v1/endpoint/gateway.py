@@ -19,7 +19,8 @@ async def create_user(
     if "usuario" not in current_user.scopes:
         raise HTTPException(status_code=403, detail="Not enough permissions")
     async with httpx.AsyncClient() as client:
-        response = await client.post(f"{USUARIO_SERVICE_URL}/user/", json=usuario)
+        user_dict = usuario.dict()
+        response = await client.post(f"{USUARIO_SERVICE_URL}/user/", json=user_dict)
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail=response.json())
     return response.json()
@@ -49,9 +50,15 @@ async def create_vehicle(
     if "vehiculo" not in current_user.scopes:
         raise HTTPException(status_code=403, detail="Not enough permissions")
     async with httpx.AsyncClient() as client:
-        response = await client.post(f"{VEHICULO_SERVICE_URL}/vehicle/", json=vehicle)
-    if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail=response.json())
+        vehicle_dict = vehicle.dict()
+        response = await client.post(f"{VEHICULO_SERVICE_URL}/vehicle/", json=vehicle_dict)
+        if response.status_code != 200:
+            try:
+                detail = response.json()
+            except httpx.HTTPStatusError:
+                detail = "No JSON response"
+            raise HTTPException(status_code=response.status_code, detail=detail)
+
     return response.json()
 
 

@@ -9,7 +9,6 @@ class UserBase(BaseModel):
     direction: str
 
 
-
 class VehicleBase(BaseModel):
     marca: str
     modelo: str
