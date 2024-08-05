@@ -36,7 +36,11 @@ async def read_user(
     async with httpx.AsyncClient() as client:
         response = await client.get(f"{USUARIO_SERVICE_URL}/user/{usuario_ci}")
     if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail=response)
+        try:
+            detail = response.json()
+        except httpx.HTTPStatusError:
+            detail = "No JSON response"
+        raise HTTPException(status_code=response.status_code, detail=detail)
     return response.json()
 
 
