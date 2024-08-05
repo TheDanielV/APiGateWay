@@ -36,7 +36,7 @@ async def read_user(
     async with httpx.AsyncClient() as client:
         response = await client.get(f"{USUARIO_SERVICE_URL}/user/{usuario_ci}")
     if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail=response.json())
+        raise HTTPException(status_code=response.status_code, detail=response)
     return response.json()
 
 
@@ -72,13 +72,13 @@ async def read_vehicle(
     async with httpx.AsyncClient() as client:
         response = await client.get(f"{VEHICULO_SERVICE_URL}/vehicle/{vehicle_owner}")
     if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail=response.history)
+        raise HTTPException(status_code=response.status_code, detail="Vehiculo no encontrado")
     return response.json()
 
 
 @router.delete("/vehicle/{vehicle_id}", response_model=dict)
 async def delete_vehicle(
-        vehicle_id: str,
+        vehicle_id: int,
         current_user: TokenData = Depends(get_current_active_user)
 ):
     if "vehiculo" not in current_user.scopes:
