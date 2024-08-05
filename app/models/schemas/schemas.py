@@ -2,11 +2,12 @@ from pydantic import BaseModel
 
 
 class UserBase(BaseModel):
+    ci: str
     name: str
     last_name: str
-    ci: str
     cellphone: str
     direction: str
+    auth_token: str
 
 
 class VehicleBase(BaseModel):

@@ -4,11 +4,15 @@ from fastapi import APIRouter, HTTPException, Depends
 import httpx
 from app.core.security import get_current_active_user, TokenData
 from app.models.schemas.schemas import UserBase, VehicleBase
+import os
+from dotenv import load_dotenv
 
 router = APIRouter()
 
-USUARIO_SERVICE_URL = "https://user--kumug52.internal.orangecliff-243aedf8.australiaeast.azurecontainerapps.io"
-VEHICULO_SERVICE_URL = "https://vehicle--2dnnxvk.orangecliff-243aedf8.australiaeast.azurecontainerapps.io/"
+load_dotenv()  # Cargar variables desde .env
+
+USUARIO_SERVICE_URL = os.getenv("USUARIO_SERVICE_URL")
+VEHICULO_SERVICE_URL = os.getenv("VEHICULO_SERVICE_URL")
 
 
 @router.post("/user/", response_model=dict)
@@ -22,7 +26,12 @@ async def create_user(
         user_dict = usuario.dict()
         response = await client.post(f"{USUARIO_SERVICE_URL}/user/", json=user_dict)
     if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail=response.json())
+        print(response)
+        try:
+            detail = response.json()
+        except httpx.HTTPStatusError:
+            detail = "No JSON response"
+        raise HTTPException(status_code=response.status_code, detail=detail)
     return response.json()
 
 
@@ -51,6 +60,7 @@ async def create_vehicle(
         vehicle: VehicleBase,
         current_user: TokenData = Depends(get_current_active_user)
 ):
+    print(VEHICULO_SERVICE_URL)
     if "vehiculo" not in current_user.scopes:
         raise HTTPException(status_code=403, detail="Not enough permissions")
     async with httpx.AsyncClient() as client:
