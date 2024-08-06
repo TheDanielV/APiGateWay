@@ -17,3 +17,14 @@ class VehicleBase(BaseModel):
     usuario_id: str
     anio: str
     color: str
+
+
+class AuthBase(BaseModel):
+    username: str
+    password: str
+    email: str
+
+
+class AuthenticateUser(BaseModel):
+    username: str
+    password: str

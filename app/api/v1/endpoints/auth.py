@@ -20,7 +20,7 @@ fake_users_db = {
         "full_name": "Admin User",
         "email": "admin@example.com",
         "hashed_password": "fakehashedsecret",
-        "scopes": ["usuario", "vehiculo"],
+        "scopes": ["usuario", "vehiculo", "auth"],
     },
 }
 
