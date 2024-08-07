@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, HTTPException, Depends
 import httpx
 from app.core.security import get_current_active_user, TokenData
@@ -32,8 +34,8 @@ async def create_vehicle(
     return response.json()
 
 
-@router.get("/vehicle/{vehicle_owner}", response_model=dict)
-async def read_vehicle(
+@router.get("/vehicle/{vehicle_owner}", response_model=List[dict])
+async def read_vehicles(
         vehicle_owner: str,
         current_user: TokenData = Depends(get_current_active_user)
 ):
@@ -42,7 +44,7 @@ async def read_vehicle(
     async with httpx.AsyncClient() as client:
         response = await client.get(f"{VEHICULO_SERVICE_URL}/vehicle/{vehicle_owner}")
     if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail="Vehiculo no encontrado")
+        raise HTTPException(status_code=response.status_code, detail="No existen vehiculos")
     return response.json()
 
 

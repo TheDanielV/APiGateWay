@@ -1,4 +1,5 @@
 # api_gateway/app/api/v1/endpoints/user.py
+from typing import List
 
 from fastapi import APIRouter, HTTPException, Depends
 import httpx
