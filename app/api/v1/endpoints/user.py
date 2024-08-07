@@ -53,4 +53,19 @@ async def read_user(
     return response.json()
 
 
-
+@router.get("/user/auth_token/{user_token}", response_model=dict)
+async def read_user(
+        user_token: str,
+        current_user: TokenData = Depends(get_current_active_user)
+):
+    if "usuario" not in current_user.scopes:
+        raise HTTPException(status_code=403, detail="Not enough permissions")
+    async with httpx.AsyncClient() as client:
+        response = await client.get(f"{USUARIO_SERVICE_URL}/user/user_token/{user_token}")
+    if response.status_code != 200:
+        try:
+            detail = response.json()
+        except httpx.HTTPStatusError:
+            detail = "No JSON response"
+        raise HTTPException(status_code=response.status_code, detail=detail)
+    return response.json()
